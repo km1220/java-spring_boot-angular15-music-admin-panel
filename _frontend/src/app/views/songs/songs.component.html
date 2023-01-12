@@ -1,0 +1,96 @@
+<app-toolbar title="Songs">
+  <button class="btn btn-danger" (click)="toggleModal('ADD', null, true)">Add Song</button>
+</app-toolbar>
+
+
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between">
+        <h4>Songs</h4>
+        <span>Search : <input type="search" [(ngModel)]="searchText" (change)="onSearch()" /></span>
+      </c-card-header>
+      <c-card-body>
+        <table [hover]="true" [responsive]="true" [striped]="true" stripedColumns align="middle" cTable class="border">
+          <thead cTableColor="light">
+            <tr>
+              <th style="width: 10%;">Offline</th>
+              <th style="width: 25%;">Song</th>
+              <th style="width: 25%;">Title</th>
+              <th style="width: 10%;">Paid/Free</th>
+              <th style="width: 30%;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+
+            <tr *ngFor="let each of _display_data; index as i" style="text-align: center;">
+              <!-- <tr style="text-align: center;"> -->
+              <td>
+                <input [checked]="each.offlineDownload" type="checkbox" style="height:20px; width:20px;"
+                  (change)="handleOfflineDownloadChange($event)" [value]="each.id">
+              </td>
+              <td style="text-align: center; width: 50px;">
+                <audio controls>
+                  <source src="assets/uploads/{{each.url}}" type="audio/mpeg">
+                </audio>
+              </td>
+              <td>{{each.songName}}</td>
+              <td class="text-center">
+                <div *ngIf="each.paid; then paid_content else free_content"></div>
+                <ng-template #paid_content>
+                  <span class="action-btn bg-success btn">Paid</span>
+                </ng-template>
+                <ng-template #free_content>
+                  <span class="action-btn bg-danger btn">Free</span>
+                </ng-template>
+              </td>
+              <td>
+                <c-row class="justify-content-center align-items-center m-0 p-0 text-center">
+                  <c-col>
+                    <button class="action-btn btn btn-danger m-0" (click)="handleRemoveClick(each.id!)">Remove</button>
+                  </c-col>
+                  <c-col>
+                    <button class="action-btn btn btn-warning m-0" (click)="toggleModal('EDIT', each.id, true)"
+                      cButton>Edit</button>
+                  </c-col>
+                </c-row>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <!-- song pagination -->
+        <c-pagination *ngIf="pagination.total_pages !== 1" align="center">
+          <li cPageItem [disabled]="pagination.current_page === 0">
+            <a cPageLink [routerLink] (click)="onChangePagination(null, 'prev')">Previous</a>
+          </li>
+
+          <li cPageItem *ngFor="let emptyItem of [].constructor(pagination.total_pages); index as i"
+            [active]="i === pagination.current_page">
+            <a cPageLink [routerLink] (click)="onChangePagination(i)">{{i + 1}}</a>
+          </li>
+
+          <li cPageItem [disabled]="pagination.current_page === pagination.total_pages-1">
+            <a cPageLink [routerLink] (click)="onChangePagination(null, 'next')">Next</a>
+          </li>
+        </c-pagination>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+
+
+
+<c-progress [height]="20" *ngIf="file_upload_progress.inProgress">
+  <c-progress-bar color="success" [value]="file_upload_progress.percent" variant="striped"
+    [animated]="true"></c-progress-bar>
+</c-progress>
+
+
+<song-modal type="add" [isVisible]="isModalVisible.add!" [data]="new_song" (handleSubmit)="handleAddClick()"
+  (visibleChange)="toggleModal('ADD', null, $event)"></song-modal>
+<song-modal type="edit" [isVisible]="isModalVisible.edit!" [data]="edit_song" (handleSubmit)="handleEditClick()"
+  (visibleChange)="toggleModal('EDIT', null, $event)"></song-modal>

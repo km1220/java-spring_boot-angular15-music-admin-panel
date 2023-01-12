@@ -1,0 +1,22 @@
+.body-toolbar {
+	margin-bottom: 2rem;
+	padding: 0 1rem;
+	border-radius: 8px;
+	background-color: rgba(31, 31, 35, 0.8);
+	color: white;
+}
+
+.body-toolbar>div {
+	padding: 1rem;
+}
+
+.body-toolbar p {
+	font-size: 25px;
+	font-weight: 700;
+	margin: 0;
+}
+
+.body-toolbar button {
+	// height: fit-content;
+	color: white;
+}

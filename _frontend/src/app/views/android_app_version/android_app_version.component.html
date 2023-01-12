@@ -1,0 +1,43 @@
+<app-toolbar title="Android App Version"></app-toolbar>
+
+<c-container fluid class="d-flex flex-column">
+	<c-row class="justify-content-center mb-5">
+		<c-col xs="12" lg="5">
+			<c-input-group class="">
+				<span cInputGroupText id="android-version">Android Version</span>
+				<input aria-describedby="android-version" cFormControl [(ngModel)]="app_version.version" />
+			</c-input-group>
+		</c-col>
+		<c-col xs="12" lg="5">
+			<c-input-group class="">
+				<span cInputGroupText id="check-for-update">Check for update</span>
+				<select cSelect aria-describedby="check-for-update" [(ngModel)]="app_version.check">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
+			</c-input-group>
+		</c-col>
+		<c-col xs="6" lg="2">
+			<button class="action-btn btn btn-primary w-100" (click)="handleUpdateAppVersion()">Update</button>
+		</c-col>
+	</c-row>
+	<!-- </c-container> -->
+
+	<!-- <c-container fluid class="d-flex justify-content-center"> -->
+	<c-row class="justify-content-center">
+		<c-col xs="12" lg="5" class="form-group">
+			<label for="android-version"> Android Version </label>
+			<input type="text" id="android-version" class="form-control" [(ngModel)]="app_version.version" />
+		</c-col>
+		<c-col xs="12" lg="5" class="form-group">
+			<label for="check-for-update"> Check for update </label>
+			<select id="check-for-update" class="form-select" [(ngModel)]="app_version.check">
+				<option value="1">Yes</option>
+				<option value="0">No</option>
+			</select>
+		</c-col>
+		<c-col xs="6" lg="2" class="d-flex align-items-end">
+			<button class="action-btn btn btn-danger w-100" (click)="handleUpdateAppVersion()">Update</button>
+		</c-col>
+	</c-row>
+</c-container>

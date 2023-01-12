@@ -1,0 +1,32 @@
+.dashboard-cards {
+  .card {
+    background-color: rgba(31, 31, 35, 0.8);
+    color: white;
+  }
+
+  .icon-box {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10%;
+    flex-shrink: 0;
+  }
+
+  .premium-users-card .icon-box {
+    background-image: linear-gradient(to bottom right, #e9a756, #94560f);
+  }
+
+  .songs-card .icon-box {
+    background-image: linear-gradient(to bottom right, #2eb1cb, #166778);
+  }
+
+  .chapters-card .icon-box {
+    background-image: linear-gradient(to bottom right, #e45280, #580e53);
+  }
+
+  .self-affirmation-card .icon-box {
+    background-image: linear-gradient(to bottom right, #389466, #0c482d);
+  }
+}

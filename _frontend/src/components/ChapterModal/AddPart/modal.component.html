@@ -1,0 +1,29 @@
+<c-modal id="add-self-affirmation-modal" class="text-black" [visible]="isVisible"
+	(visibleChange)="visibleChange.emit($event)">
+	<c-modal-header>
+		<h5 cModalTitle>Add Part</h5>
+		<button (click)="closeModal()" cButtonClose></button>
+	</c-modal-header>
+	<c-modal-body class="p-3">
+		<div class="form-group mb-3">
+			<label> Title </label>
+			<input type="text" class="form-control" [(ngModel)]="data.part" />
+		</div>
+		<div class="form-group mb-3">
+			<label> Paid/Free </label>
+			<select class="form-select" [(ngModel)]="data.paid">
+				<option value="0">Free</option>
+				<option value="1">Paid</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label> Upload Part </label>
+			<input type="file" id="modal-song-file" class="form-control" [(ngModel)]="data.upload_file"
+				(change)="onFileChange($event)" />
+		</div>
+	</c-modal-body>
+	<c-modal-footer>
+		<button cButton color="primary" (click)="handleSubmit.emit()">Submit</button>
+	</c-modal-footer>
+</c-modal>

@@ -1,0 +1,87 @@
+<app-toolbar title="Part">
+  <button class="btn btn-danger" (click)="toggleModal('ADD_PART', null, true)">Add Chapter</button>
+</app-toolbar>
+
+
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between">
+        <h4>Chapters</h4>
+        <span>Search : <input type="search" [(ngModel)]="searchText" (change)="onSearch()" /></span>
+      </c-card-header>
+      <c-card-body>
+        <table [hover]="true" [responsive]="true" [striped]="true" align="middle" cTable class="border">
+          <thead cTableColor="light" class="text-center">
+            <tr>
+              <th>Offline</th>
+              <th>Part Name</th>
+              <th>Parts</th>
+              <th>Paid/Free</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let each of _display_data; index as i" style="text-align: center;">
+              <td>
+                <input [checked]="each.offlineDownload" type="checkbox" style="height:20px; width:20px;"
+                  (change)="handleOfflineDownloadChange($event)" [value]="each.id">
+              </td>
+              <td>{{each.part}}</td>
+              <td style="text-align: center; width: 50px;">
+                <audio controls>
+                  <source src="assets/uploads/{{each.url}}" type="audio/mpeg">
+                </audio>
+              </td>
+              <td class="text-center">
+                <div *ngIf="each.paid; then paid_content else free_content"></div>
+                <ng-template #paid_content>
+                  <span class="action-btn bg-success btn">Paid</span>
+                </ng-template>
+                <ng-template #free_content>
+                  <span class="action-btn bg-danger btn">Free</span>
+                </ng-template>
+              </td>
+
+              <td>
+                <c-row class="justify-content-center align-items-center m-0 p-0 text-center">
+                  <c-col>
+                    <button class="action-btn btn btn-danger m-0"
+                      (click)="handleRemovePartClick(each.id!)">Remove</button>
+                  </c-col>
+                </c-row>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <!-- chapter part pagination -->
+        <c-pagination *ngIf="pagination.total_pages !== 1" align="center">
+          <li cPageItem [disabled]="pagination.current_page === 0">
+            <a cPageLink [routerLink] (click)="onChangePagination(null, 'prev')">Previous</a>
+          </li>
+
+          <li cPageItem *ngFor="let emptyItem of [].constructor(pagination.total_pages); index as i"
+            [active]="i === pagination.current_page">
+            <a cPageLink [routerLink] (click)="onChangePagination(i)">{{i + 1}}</a>
+          </li>
+
+          <li cPageItem [disabled]="pagination.current_page === pagination.total_pages-1">
+            <a cPageLink [routerLink] (click)="onChangePagination(null, 'next')">Next</a>
+          </li>
+        </c-pagination>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+
+<c-progress [height]="20">
+  <c-progress-bar color="success" [value]="25"></c-progress-bar>
+  <c-progress-bar color="warning" [value]="50" variant="striped" [animated]="true"></c-progress-bar>
+</c-progress>
+
+
+<part-add-modal [isVisible]="isModalVisible.addPart!" [data]="new_part" (handleSubmit)="handleAddPartClick()"
+  (visibleChange)="toggleModal('ADD_PART', null, $event)"></part-add-modal>

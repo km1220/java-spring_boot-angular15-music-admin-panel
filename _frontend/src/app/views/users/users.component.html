@@ -1,0 +1,38 @@
+<app-toolbar title="Users"></app-toolbar>
+
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between">
+        <h4>Users</h4>
+        <span>Search : <input type="search" [(ngModel)]="searchText" (change)="handleSearch()" /></span>
+      </c-card-header>
+      <c-card-body>
+        <table [hover]="true" [responsive]="true" [striped]="true" stripedColumns align="middle" cTable
+          class="mb-0 border">
+          <thead cTableColor="light">
+            <tr>
+              <th>Email</th>
+              <th style="width: 30%;">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let each of _searched_data; index as i">
+              <td>{{each.email}}</td>
+              <td style="text-align: center;">
+                <div *ngIf="each.id! % 2; then paid_content else free_content"></div>
+                <!-- <div *ngIf="isPaidUser; then paid_content else free_content"></div> -->
+                <ng-template #paid_content>
+                  <span class="action-btn bg-success btn w-75">Paid</span>
+                </ng-template>
+                <ng-template #free_content>
+                  <span class="action-btn bg-danger btn w-75">Free</span>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

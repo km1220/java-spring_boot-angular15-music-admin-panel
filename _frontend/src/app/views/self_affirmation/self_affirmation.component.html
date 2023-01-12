@@ -1,0 +1,186 @@
+<app-toolbar title="Self Affirmation">
+	<button class="btn btn-danger" (click)="toggleModal('ADD', null, true)" cButton>Add Self Affirmation</button>
+</app-toolbar>
+
+<c-row>
+	<c-col xs>
+		<c-card class="mb-4">
+			<c-card-header class="d-flex justify-content-between">
+				<h4>Self Affirmations</h4>
+				<span>Search : <input type="search" [(ngModel)]="searchText" (change)="onSearch()" /></span>
+			</c-card-header>
+			<c-card-body>
+				<table [hover]="true" [responsive]="true" [striped]="true" stripedColumns align="middle" cTable
+					class="border">
+					<thead cTableColor="light">
+						<tr>
+							<th style="width: 10%;">Offline</th>
+							<th style="width: 25%;">Song</th>
+							<th style="width: 25%;">Title</th>
+							<th style="width: 10%;">Paid/Free</th>
+							<th style="width: 30%;">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let each of _display_data; index as i">
+							<!-- <tr style="text-align: center;"> -->
+							<td>
+								<input [checked]="each.offlineDownload" type="checkbox" style="height:20px; width:20px;"
+									(change)="handleOfflineDownloadChange($event)" [value]="each.id">
+							</td>
+							<td style="text-align: center; width: 50px;">
+								<audio controls>
+									<source src="assets/uploads/{{each.url}}" type="audio/mpeg">
+								</audio>
+							</td>
+							<td>{{each.songName}}</td>
+							<td class="text-center">
+								<div *ngIf="each.paid; then paid_content else free_content"></div>
+								<ng-template #paid_content>
+									<span class="action-btn bg-success btn">Paid</span>
+									<!-- <c-badge color="success">Paid</c-badge> -->
+								</ng-template>
+								<ng-template #free_content>
+									<span class="action-btn bg-danger btn">Free</span>
+									<!-- <c-badge color="danger">Free</c-badge> -->
+								</ng-template>
+							</td>
+							<td>
+								<c-row class="justify-content-center align-items-center m-0 p-0 text-center">
+									<c-col>
+										<!-- <form method="post" action="">
+											<input type="hidden" name="edit_id" value="____id____"> -->
+										<button class="action-btn btn btn-danger m-0"
+											(click)="handleRemoveClick(each.id!)">Remove</button>
+										<!-- </form> -->
+									</c-col>
+									<c-col>
+										<button class="action-btn btn btn-warning m-0"
+											(click)="toggleModal('EDIT', each.id, true)" cButton>Edit</button>
+									</c-col>
+								</c-row>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+				<!-- self affirmation pagination -->
+				<c-pagination *ngIf="pagination.total_pages !== 1" align="center">
+					<li cPageItem [disabled]="pagination.current_page === 0">
+						<a cPageLink [routerLink] (click)="onChangePagination(null, 'prev')">Previous</a>
+					</li>
+
+					<li cPageItem *ngFor="let emptyItem of [].constructor(pagination.total_pages); index as i"
+						[active]="i === pagination.current_page">
+						<a cPageLink [routerLink] (click)="onChangePagination(i)">{{i + 1}}</a>
+					</li>
+
+					<li cPageItem [disabled]="pagination.current_page === pagination.total_pages-1">
+						<a cPageLink [routerLink] (click)="onChangePagination(null, 'next')">Next</a>
+					</li>
+				</c-pagination>
+			</c-card-body>
+		</c-card>
+	</c-col>
+</c-row>
+
+
+
+<c-progress [height]="20" *ngIf="file_upload_progress.inProgress">
+	<c-progress-bar color="success" [value]="file_upload_progress.percent" variant="striped"
+		[animated]="true"></c-progress-bar>
+</c-progress>
+
+
+
+<!-- <song-modal [isVisible]="isModalVisible.add" [data]="new_song" (handleSubmit)="handleAddClick()"
+	(visibleChange)="isModalVisible.add = $event"></song-modal>
+<song-modal [isVisible]="isModalVisible.edit" [data]="edit_song" (handleSubmit)="handleEditClick()"
+	(visibleChange)="isModalVisible.edit = $event; "></song-modal> -->
+
+
+<song-modal type="add" [isVisible]="isModalVisible.add!" [data]="new_song" (handleSubmit)="handleAddClick()"
+	(visibleChange)="toggleModal('ADD', null, $event)"></song-modal>
+<song-modal type="edit" [isVisible]="isModalVisible.edit!" [data]="edit_song" (handleSubmit)="handleEditClick()"
+	(visibleChange)="toggleModal('EDIT', null, $event)"></song-modal>
+
+<!-- <ng-template #addModal> -->
+<!-- <button class="btn btn-danger" (click)="toggleModal('ADD')" cButton>Add Self Affirmation</button> -->
+<!-- 
+	<c-modal id="add-self-affirmation-modal" 
+		class="text-black"
+		[visible]="isModalVisible.add" 
+	>
+		<c-modal-header>
+			<h5 cModalTitle>Add Self Affirmation</h5>
+			<button (click)="toggleModal('ADD')" cButtonClose></button>
+		</c-modal-header>
+		<c-modal-body class="p-3">
+			<div class="form-group mb-3">
+				<label for="modal-song-title">
+					Song Title
+				</label>
+				<input type="text" class="form-control" [(ngModel)]="new_song.songName" />
+			</div>
+			<div class="form-group mb-3">
+				<label for="modal-song-type">
+					Type
+				</label>
+				<select class="form-select" [(ngModel)]="new_song.paid">
+					<option value="0">Free</option>
+					<option value="1">Paid</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="modal-song-file">
+					Upload Song : {{new_song.url}}
+				</label>
+				<input type="file" id="modal-song-file" class="form-control" [(ngModel)]="new_song.file" />
+			</div>
+		</c-modal-body>
+		<c-modal-footer>
+			<button cButton color="primary" (click)="handleAddClick()">Submit</button>
+		</c-modal-footer>
+	</c-modal> -->
+<!-- </ng-template> -->
+
+<!-- <ng-template #editModal let-data="data"> -->
+<!-- <button class="action-btn btn btn-warning" (click)="toggleModal('EDIT', data.id)" cButton>Edit</button> -->
+<!-- <c-modal id="edit-self-affirmation-modal" 
+	class="text-black"
+	[visible]="isModalVisible.edit" 
+>
+	<c-modal-header>
+		<h5 cModalTitle>Edit Self Affirmation</h5>
+		<button (click)="toggleModal('EDIT')" cButtonClose></button>
+	</c-modal-header>
+	<c-modal-body class="p-3">
+		<div class="form-group mb-3">
+			<label for="modal-song-title">
+				Song Title
+			</label>
+			<input type="text" class="form-control" [(ngModel)]="edit_song.songName" />
+		</div>
+		<div class="form-group mb-3">
+			<label for="modal-song-type">
+				Type
+			</label>
+			<select class="form-select" [(ngModel)]="edit_song.paid">
+				<option value="0">Free</option>
+				<option value="1">Paid</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="modal-song-file">
+				Upload Song : {{edit_song.url}}
+			</label>
+			<input type="file" id="modal-edit-song-file" class="form-control" [(ngModel)]="edit_song.file" />
+		</div>
+	</c-modal-body>
+	<c-modal-footer>
+		<button cButton color="primary" (click)="handleEditClick()">Edit</button>
+	</c-modal-footer>
+</c-modal> -->
+
+<!-- </ng-template> -->

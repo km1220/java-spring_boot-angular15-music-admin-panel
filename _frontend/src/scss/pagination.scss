@@ -1,0 +1,25 @@
+:root {
+	& .pagination {
+		& .page-item {
+			cursor: pointer;
+
+			&.active>a {
+				background-color: #29353E;
+				color: #ffffff;
+				font-weight: 700;
+			}
+		}
+	}
+
+	& .dark-theme .pagination {
+		& .page-item {
+			cursor: pointer;
+
+			&.active>a {
+				background-color: #ffffff;
+				color: #29353E;
+				font-weight: 700;
+			}
+		}
+	}
+}

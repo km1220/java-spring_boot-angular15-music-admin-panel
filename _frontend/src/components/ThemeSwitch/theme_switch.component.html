@@ -1,0 +1,57 @@
+<!-- <c-form-check aria-label="Theme switch" [(ngModel)]="theme" (change)="handleThemeChange()"></c-form-check> -->
+
+
+
+<div class="d-flex justify-content-center align-items-center mx-5 p-0">
+    <label cFormCheckLabel>
+        <svg class="icon" cIcon name="cilSun"></svg>
+    </label>
+    <c-form-check sizing="xl" switch class="mx-3 p-0">
+        <input cFormCheckInput checked class="m-0 p-0" cCol="" type="checkbox" style="width: 50px;" [(ngModel)]="theme"
+            (change)="setDarkTheme(theme)" />
+    </c-form-check>
+    <label cFormCheckLabel>
+        <svg class="icon" cIcon name="cilMoon"></svg>
+    </label>
+</div>
+
+
+<script>
+    console.log(theme2 == 'false')
+</script>
+<c-button-group>
+    <input class="btn-check" id="light-radio" name="theme-radio" type="radio" value={{false}} [(ngModel)]="theme2"
+        (change)="handleThemeChange()" />
+    <label cButton cFormCheckLabel color="" for="light-radio" variant="outline" id="light-radio-label"
+        class="{{theme2 == 'false' ? 'selected' : ''}}">
+        <svg class="icon" cIcon name="cilSun"></svg>
+    </label>
+
+    <input class="btn-check" id="dark-radio" name="theme-radio" type="radio" value={{true}} [(ngModel)]="theme2"
+        (change)="handleThemeChange()" />
+    <label cButton cFormCheckLabel color="" for="dark-radio" variant="outline" id="dark-radio-label"
+        class="{{theme2 == 'true' ? 'selected' : ''}}">
+        <svg class="icon" cIcon name="cilMoon"></svg>
+    </label>
+</c-button-group>
+
+
+
+
+
+
+<!-- 
+<c-button-group>
+    <c-form-check>
+        <input cFormCheckInput class="btn-check" id="btn-light-theme" type="radio" value="light" />
+        <label cbutton cFormCheckLabel class="btn btn-primary form-check-label" color="primary" type="button">
+            <svg class="icon" cIcon name="cilSun"></svg>
+        </label>
+    </c-form-check>
+    <c-form-check>
+        <input cFormCheckInput class="btn-check" id="btn-dark-theme" type="radio" value="dark" />
+        <label cbutton cFormCheckLabel class="btn btn-primary form-check-label" color="primary" type="button">
+            <svg class="icon" cIcon name="cilMoon"></svg>
+        </label>
+    </c-form-check>
+</c-button-group> -->

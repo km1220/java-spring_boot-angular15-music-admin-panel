@@ -1,0 +1,93 @@
+<app-toolbar title="Chapters">
+  <button class="btn btn-danger" (click)="toggleModal('ADD_CHAPTER', null, true)">Add Chapter</button>
+</app-toolbar>
+
+
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between">
+        <h4>Chapters</h4>
+        <span>Search : <input type="search" [(ngModel)]="searchText" (change)="onSearch()" /></span>
+      </c-card-header>
+      <c-card-body>
+        <table [hover]="true" [responsive]="true" [striped]="true" align="middle" cTable class="border">
+          <thead cTableColor="light" class="text-center">
+            <tr>
+              <th>Chapter Name</th>
+              <th>Parts</th>
+              <th>Paid/Free</th>
+              <th>Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let each of _display_data; index as i" style="text-align: center;">
+              <td>{{each.name}}</td>
+              <td>
+                <!-- <a [routerLink]="['chapters', each.id]">{{each.numSubParts}}</a> -->
+                <a routerLink="/chapters/{{each.id}}">{{each.numSubParts}}</a>
+              </td>
+              <td class="text-center">
+                <div *ngIf="each.paid; then paid_content else free_content"></div>
+                <ng-template #paid_content>
+                  <span class="action-btn bg-success btn">Paid</span>
+                </ng-template>
+                <ng-template #free_content>
+                  <span class="action-btn bg-danger btn">Free</span>
+                </ng-template>
+              </td>
+              <td>${{each.price}}</td>
+              <td>
+                <c-row class="justify-content-center align-items-center m-0 p-0 text-center">
+                  <c-col>
+                    <button class="action-btn btn btn-danger m-0"
+                      (click)="handleRemoveChapterClick(each.id!)">Remove</button>
+                  </c-col>
+                  <c-col>
+                    <button class="action-btn btn btn-success m-0" (click)="toggleModal('ADD_PART', each.id, true)"> Add
+                      Part </button>
+                  </c-col>
+                  <c-col>
+                    <button class="action-btn btn btn-warning m-0" (click)="toggleModal('EDIT_CHAPTER', each.id, true)">
+                      Edit Chapter </button>
+                  </c-col>
+                </c-row>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <!-- chapters pagination -->
+        <c-pagination *ngIf="pagination.total_pages !== 1" align="center">
+          <li cPageItem [disabled]="pagination.current_page === 0">
+            <a cPageLink [routerLink] (click)="onChangePagination(null, 'prev')">Previous</a>
+          </li>
+
+          <li cPageItem *ngFor="let emptyItem of [].constructor(pagination.total_pages); index as i"
+            [active]="i === pagination.current_page">
+            <a cPageLink [routerLink] (click)="onChangePagination(i)">{{i + 1}}</a>
+          </li>
+
+          <li cPageItem [disabled]="pagination.current_page === pagination.total_pages-1">
+            <a cPageLink [routerLink] (click)="onChangePagination(null, 'next')">Next</a>
+          </li>
+        </c-pagination>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<c-progress [height]="20" *ngIf="file_upload_progress.inProgress">
+  <c-progress-bar color="success" [value]="file_upload_progress.percent" variant="striped"
+    [animated]="true"></c-progress-bar>
+</c-progress>
+
+
+<chapter-add-modal [isVisible]="isModalVisible.add!" [data]="new_chapter" (handleSubmit)="handleAddChapterClick()"
+  (visibleChange)="toggleModal('ADD_CHAPTER', null, $event)"></chapter-add-modal>
+<chapter-edit-modal [isVisible]="isModalVisible.edit!" [data]="edit_chapter" (handleSubmit)="handleEditChapterClick()"
+  (visibleChange)="toggleModal('EDIT_CHAPTER', null, $event)"></chapter-edit-modal>
+<part-add-modal [isVisible]="isModalVisible.addPart!" [data]="new_part" (handleSubmit)="handleAddPartClick()"
+  (visibleChange)="toggleModal('ADD_PART', null, $event)"></part-add-modal>

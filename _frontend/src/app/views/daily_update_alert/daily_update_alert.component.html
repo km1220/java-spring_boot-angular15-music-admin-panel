@@ -1,0 +1,24 @@
+<app-toolbar title="Daily Update Alert"></app-toolbar>
+
+<c-row class="my-3">
+	<c-col xs="4" class="form-group">
+		<label for="alert-type-input"> Alert Type </label>
+		<select id="alert-type-input" class="form-select">
+			<option value="1">Songs</option>
+			<option value="2">Chapters</option>
+		</select>
+	</c-col>
+	<div class="d-flex align-items-end" style="width: fit-content;">
+		<button class="btn btn-danger" id="">Check</button>
+	</div>
+
+	<c-col xs="6" class="d-flex align-items-end">
+		<c-input-group>
+			<label cInputGroupText for="alert-type-input-2"> Alert Type </label>
+			<select cSelect id="alert-type-input-2">
+				<option value="1">Songs</option>
+				<option value="2">Chapters</option>
+			</select>
+		</c-input-group>
+	</c-col>
+</c-row>

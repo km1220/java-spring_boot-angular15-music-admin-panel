@@ -1,0 +1,27 @@
+<app-toolbar title="API Keys"></app-toolbar>
+
+<c-container fluid class="d-flex justify-content-center">
+  <c-row class="justify-content-center align-items-center" style="width: 80%;">
+    <c-input-group class="mb-3">
+      <span cInputGroupText id="public-key" style="width: 15%;">Public Key</span>
+      <input aria-describedby="public-key" aria-label="Public Key" cFormControl
+        [(ngModel)]="api_result_keys[0].publicKey" />
+    </c-input-group>
+    <c-input-group class="mb-3">
+      <span cInputGroupText id="private-key" style="width: 15%;">Private Key</span>
+      <input aria-describedby="private-key" aria-label="Private Key" cFormControl
+        [(ngModel)]="api_result_keys[0].secretKey" />
+    </c-input-group>
+    <button class="btn btn-primary w-50" (click)="handleUpdateKeys()">Update Keys</button>
+
+
+
+    <c-input-group class="mt-3">
+      <input aria-label="Username" cFormControl [(ngModel)]="api_result_keys[0].publicKey" />
+      <span cInputGroupText>Public</span>
+      <button cInputGroupText (click)="handleUpdateKeys()">🔑</button>
+      <span cInputGroupText>Private</span>
+      <input aria-label=" Server" cFormControl [(ngModel)]="api_result_keys[0].secretKey" />
+    </c-input-group>
+  </c-row>
+</c-container>
